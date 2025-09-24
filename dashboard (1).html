@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' fonts.googleapis.com cdnjs.cloudflare.com; font-src fonts.gstatic.com; connect-src 'self' http://localhost:5500 127.0.0.1:5500;">
+    <title>Dashboard - SubManager</title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="../assets/img/favicon.png">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/auth.css">
+    <link rel="stylesheet" href="../css/dashboard.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .dashboard {
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .welcome-section {
+            background: linear-gradient(135deg, #3498db, #2c3e50);
+            color: white;
+            padding: 2rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+        }
+
+        .welcome-section h1 {
+            margin-bottom: 1rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .stat-card h3 {
+            color: #666;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-card .value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #2c3e50;
+        }
+
+        .subscription-list {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .subscription-list h2 {
+            padding: 1.5rem;
+            margin: 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .subscription-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        .subscription-item:last-child {
+            border-bottom: none;
+        }
+
+        .subscription-info h3 {
+            margin: 0;
+            color: #2c3e50;
+        }
+
+        .subscription-meta {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .subscription-price {
+            font-weight: 500;
+            color: #2c3e50;
+        }
+
+        .status-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .status-active {
+            background-color: #e1f7e1;
+            color: #22c55e;
+        }
+
+        .status-upcoming {
+            background-color: #fef3c7;
+            color: #d97706;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <h1>SubManager</h1>
+            </div>
+            <div class="nav-links">
+                <a href="dashboard.html" class="active">Dashboard</a>
+                <a href="budget.html">Budget</a>
+                <a href="help.html">Help</a>
+                <a href="settings.html">Settings</a>
+            </div>
+            <div class="auth-buttons">
+                <!-- Will be populated by auth.js -->
+            </div>
+        </nav>
+    </header>
+
+    <main class="dashboard">
+        <section class="welcome-section">
+            <h1>Welcome back, <span id="userName">User</span>!</h1>
+            <p>Here's an overview of your subscriptions</p>
+        </section>
+
+        <section class="stats-grid">
+            <div class="stat-card">
+                <h3>Active Subscriptions</h3>
+                <div class="value" id="activeSubscriptions">-</div>
+            </div>
+            <div class="stat-card">
+                <h3>Monthly Spend</h3>
+                <div class="value" id="monthlySpend">-</div>
+            </div>
+            <div class="stat-card">
+                <h3>Next Payment</h3>
+                <div class="value" id="nextPayment">-</div>
+                <div class="meta" id="nextPaymentAmount"></div>
+            </div>
+            <div class="stat-card">
+                <h3>Upcoming Bills</h3>
+                <div class="value" id="upcomingPayments">-</div>
+            </div>
+        </section>
+
+        <section class="subscription-list">
+            <div class="list-header">
+                <h2>Recent Subscriptions</h2>
+                <button class="btn btn-primary" onclick="window.location.href='add-subscription.html'">
+                    <i class="fas fa-plus"></i> Add Subscription
+                </button>
+            </div>
+            <div id="subscriptionItems">
+                <!-- Subscription items will be populated dynamically -->
+                <div class="loading-indicator">
+                    <i class="fas fa-spinner fa-spin"></i>
+                    Loading subscriptions...
+                </div>
+            </div>
+        </section>
+
+        <!-- Add Chart Section -->
+        <section class="chart-section">
+            <div class="chart-container">
+                <canvas id="expenseChart"></canvas>
+            </div>
+            <div class="chart-container">
+                <canvas id="categoryChart"></canvas>
+            </div>
+        </section>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/subscription.js"></script>
+    <script src="../js/dashboard.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            if (!authManager.checkSession()) {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            // Update user name
+            const userNameElement = document.getElementById('userName');
+            if (userNameElement && authManager.currentUser) {
+                userNameElement.textContent = authManager.currentUser.fullName;
+            }
+
+            // Initialize dashboard
+            initializeDashboard();
+        });
+    </script>
+</body>
+</html>

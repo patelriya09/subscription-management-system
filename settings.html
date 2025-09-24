@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings - Subscription Manager</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <header class="header">
+        <nav class="navbar">
+            <div class="nav-brand">
+                <i class="fas fa-credit-card"></i>
+                <span>Subscription Manager</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="dashboard.html" class="nav-link">Dashboard</a></li>
+                <li><a href="notifications.html" class="nav-link">Notifications</a></li>
+                <li><a href="settings.html" class="nav-link active">Settings</a></li>
+                <li><a href="#" class="nav-link" onclick="handleLogout()">Logout</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </nav>
+    </header>
+
+    <main class="main">
+        <div class="dashboard">
+            <div class="dashboard-header">
+                <h1 class="dashboard-title">Settings</h1>
+            </div>
+
+            <div class="settings-container">
+                <!-- Profile Settings -->
+                <div class="settings-section">
+                    <h2><i class="fas fa-user"></i> Profile Settings</h2>
+                    <div class="settings-card">
+                        <form id="profileForm" onsubmit="handleProfileUpdate(event)">
+                            <div class="form-group">
+                                <label for="profileFirstName">First Name</label>
+                                <input type="text" id="profileFirstName" name="firstName" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="profileLastName">Last Name</label>
+                                <input type="text" id="profileLastName" name="lastName" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="profileEmail">Email Address</label>
+                                <input type="email" id="profileEmail" name="email" required>
+                            </div>
+                            
+                            <button type="submit" class="btn btn-primary">Update Profile</button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Password Settings -->
+                <div class="settings-section">
+                    <h2><i class="fas fa-lock"></i> Password Settings</h2>
+                    <div class="settings-card">
+                        <form id="passwordForm" onsubmit="handlePasswordUpdate(event)">
+                            <div class="form-group">
+                                <label for="currentPassword">Current Password</label>
+                                <input type="password" id="currentPassword" name="currentPassword" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="newPassword">New Password</label>
+                                <input type="password" id="newPassword" name="newPassword" required minlength="6">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="confirmNewPassword">Confirm New Password</label>
+                                <input type="password" id="confirmNewPassword" name="confirmNewPassword" required>
+                            </div>
+                            
+                            <button type="submit" class="btn btn-primary">Update Password</button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Notification Settings -->
+                <div class="settings-section">
+                    <h2><i class="fas fa-bell"></i> Notification Settings</h2>
+                    <div class="settings-card">
+                        <form id="notificationForm" onsubmit="handleNotificationUpdate(event)">
+                            <div class="form-group">
+                                <label style="display: flex; align-items: center; gap: 0.5rem;">
+                                    <input type="checkbox" id="emailReminders" name="emailReminders">
+                                    Enable email reminders for upcoming payments
+                                </label>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="reminderDays">Remind me (days before payment)</label>
+                                <select id="reminderDays" name="reminderDays">
+                                    <option value="1">1 day</option>
+                                    <option value="3">3 days</option>
+                                    <option value="7" selected>7 days</option>
+                                    <option value="14">14 days</option>
+                                </select>
+                            </div>
+                            
+                            <button type="submit" class="btn btn-primary">Save Notification Settings</button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Data Management -->
+                <div class="settings-section">
+                    <h2><i class="fas fa-database"></i> Data Management</h2>
+                    <div class="settings-card">
+                        <div class="data-actions">
+                            <button class="btn btn-secondary" onclick="exportData()">
+                                <i class="fas fa-download"></i> Export Data
+                            </button>
+                            <label for="importFile" class="btn btn-secondary" style="cursor: pointer;">
+                                <i class="fas fa-upload"></i> Import Data
+                                <input type="file" id="importFile" accept=".json" style="display: none;" onchange="importData(event)">
+                            </label>
+                            <button class="btn btn-danger" onclick="clearAllData()">
+                                <i class="fas fa-trash"></i> Clear All Data
+                            </button>
+                        </div>
+                        <p style="color: #64748b; font-size: 0.875rem; margin-top: 1rem;">
+                            Export your subscription data as a backup or import previously exported data.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Account Actions -->
+                <div class="settings-section">
+                    <h2><i class="fas fa-exclamation-triangle"></i> Account Actions</h2>
+                    <div class="settings-card">
+                        <div class="account-actions">
+                            <button class="btn btn-danger" onclick="deleteAccount()">
+                                <i class="fas fa-user-times"></i> Delete Account
+                            </button>
+                        </div>
+                        <p style="color: #64748b; font-size: 0.875rem; margin-top: 1rem;">
+                            Permanently delete your account and all associated data. This action cannot be undone.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 Subscription Manager. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="js/script.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/settings.js"></script>
+</body>
+</html>

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Subscription - SubManager</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/subscription-form.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <a href="dashboard.html"><h1>SubManager</h1></a>
+            </div>
+            <div class="auth-buttons">
+                <!-- Will be populated by auth.js -->
+            </div>
+        </nav>
+    </header>
+
+    <main class="subscription-form-container">
+        <div class="form-card">
+            <div class="form-header">
+                <h1>Add New Subscription</h1>
+                <p>Enter the details of your subscription below</p>
+            </div>
+
+            <form id="subscriptionForm" class="subscription-form" novalidate>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="name">Subscription Name*</label>
+                        <input type="text" id="name" name="name" required>
+                        <div class="error-message" data-error="name"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="category">Category*</label>
+                        <select id="category" name="category" required>
+                            <option value="">Select a category</option>
+                            <option value="Entertainment">Entertainment</option>
+                            <option value="Software">Software</option>
+                            <option value="Music">Music</option>
+                            <option value="Productivity">Productivity</option>
+                            <option value="Cloud Storage">Cloud Storage</option>
+                            <option value="Gaming">Gaming</option>
+                            <option value="Other">Other</option>
+                        </select>
+                        <div class="error-message" data-error="category"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="amount">Amount*</label>
+                        <div class="currency-input">
+                            <input type="number" id="amount" name="amount" step="0.01" min="0" required>
+                        </div>
+                        <div class="error-message" data-error="amount"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="billingDate">First Billing Date*</label>
+                        <input type="date" id="billingDate" name="billingDate" required>
+                        <div class="error-message" data-error="billingDate"></div>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label>Billing Frequency*</label>
+                        <div class="frequency-options">
+                            <div class="frequency-option">
+                                <input type="radio" id="monthly" name="frequency" value="monthly" checked>
+                                <label for="monthly">Monthly</label>
+                            </div>
+                            <div class="frequency-option">
+                                <input type="radio" id="quarterly" name="frequency" value="quarterly">
+                                <label for="quarterly">Quarterly</label>
+                            </div>
+                            <div class="frequency-option">
+                                <input type="radio" id="yearly" name="frequency" value="yearly">
+                                <label for="yearly">Yearly</label>
+                            </div>
+                        </div>
+                        <div class="error-message" data-error="frequency"></div>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label for="description">Description</label>
+                        <textarea id="description" name="description" rows="3"></textarea>
+                        <div class="hint-text">Add any notes or details about this subscription</div>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label for="reminderDays">Payment Reminder</label>
+                        <select id="reminderDays" name="reminderDays">
+                            <option value="7">7 days before</option>
+                            <option value="3">3 days before</option>
+                            <option value="1">1 day before</option>
+                            <option value="0">On the day</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="window.location.href='dashboard.html'">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Add Subscription</button>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <script src="../js/auth.js"></script>
+    <script src="../js/subscription.js"></script>
+    <script src="../js/subscription-form.js"></script>
+</body>
+</html>

@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Subscription Manager</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <header class="header">
+        <nav class="navbar">
+            <div class="nav-brand">
+                <i class="fas fa-credit-card"></i>
+                <span>Subscription Manager</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="dashboard.html" class="nav-link active">Dashboard</a></li>
+                <li><a href="notifications.html" class="nav-link">Notifications</a></li>
+                <li><a href="settings.html" class="nav-link">Settings</a></li>
+                <li><a href="#" class="nav-link" onclick="handleLogout()">Logout</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </nav>
+    </header>
+
+    <main class="main">
+        <div class="dashboard">
+            <div class="dashboard-header">
+                <h1 class="dashboard-title">Dashboard</h1>
+                <button class="btn btn-primary" onclick="openModal('addSubscriptionModal')">
+                    <i class="fas fa-plus"></i> Add Subscription
+                </button>
+            </div>
+
+            <!-- Stats Cards -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3>Active Subscriptions</h3>
+                    <div class="value" id="activeSubscriptions">0</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Total Monthly Cost</h3>
+                    <div class="value" id="totalAmount">$0.00</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Upcoming Payments</h3>
+                    <div class="value" id="upcomingPayments">0</div>
+                </div>
+            </div>
+
+            <!-- Search and Filter -->
+            <div class="subscriptions-table">
+                <div class="table-header">
+                    <h2 class="table-title">My Subscriptions</h2>
+                    <div style="display: flex; gap: 1rem; align-items: center;">
+                        <input type="text" id="searchInput" placeholder="Search subscriptions..." 
+                               style="padding: 0.5rem; border: 1px solid #e5e7eb; border-radius: 6px;"
+                               onkeyup="searchSubscriptions()">
+                        <select id="statusFilter" onchange="filterByStatus()" 
+                                style="padding: 0.5rem; border: 1px solid #e5e7eb; border-radius: 6px;">
+                            <option value="all">All Status</option>
+                            <option value="Active">Active</option>
+                            <option value="Expired">Expired</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <table class="table" id="subscriptionsTable">
+                    <thead>
+                        <tr>
+                            <th>Service Name</th>
+                            <th>Amount</th>
+                            <th>Billing Date</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Subscription rows will be populated by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <!-- Add Subscription Modal -->
+    <div id="addSubscriptionModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('addSubscriptionModal')">&times;</span>
+            <h2>Add New Subscription</h2>
+            <form id="addSubscriptionForm" onsubmit="handleAddSubscription(event)">
+                <div class="form-group">
+                    <label for="serviceName">Service Name</label>
+                    <input type="text" id="serviceName" name="serviceName" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="amount">Amount ($)</label>
+                    <input type="number" id="amount" name="amount" step="0.01" min="0" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="billingDate">Billing Date</label>
+                    <input type="date" id="billingDate" name="billingDate" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="status">Status</label>
+                    <select id="status" name="status" required>
+                        <option value="Active">Active</option>
+                        <option value="Expired">Expired</option>
+                    </select>
+                </div>
+                
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Add Subscription</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Edit Subscription Modal -->
+    <div id="editSubscriptionModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('editSubscriptionModal')">&times;</span>
+            <h2>Edit Subscription</h2>
+            <form id="editSubscriptionForm" onsubmit="handleEditSubscription(event)">
+                <div class="form-group">
+                    <label for="editServiceName">Service Name</label>
+                    <input type="text" id="editServiceName" name="serviceName" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="editAmount">Amount ($)</label>
+                    <input type="number" id="editAmount" name="amount" step="0.01" min="0" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="editBillingDate">Billing Date</label>
+                    <input type="date" id="editBillingDate" name="billingDate" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="editStatus">Status</label>
+                    <select id="editStatus" name="status" required>
+                        <option value="Active">Active</option>
+                        <option value="Expired">Expired</option>
+                    </select>
+                </div>
+                
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Update Subscription</button>
+            </form>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 Subscription Manager. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="js/script.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/notifications.js"></script>
+    <script src="js/dashboard.js"></script>
+</body>
+</html>

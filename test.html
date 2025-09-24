@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Page - Subscription Manager</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <header class="header">
+        <nav class="navbar">
+            <div class="nav-brand">
+                <i class="fas fa-credit-card"></i>
+                <span>Subscription Manager - Test</span>
+            </div>
+        </nav>
+    </header>
+
+    <main class="main">
+        <div class="dashboard">
+            <h1>System Test Page</h1>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3>Test Functions</h3>
+                    <div class="value">
+                        <button class="btn btn-primary" onclick="testNotifications()">Test Notifications</button>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <h3>Sample Data</h3>
+                    <div class="value">
+                        <button class="btn btn-secondary" onclick="addSampleData()">Add Sample Data</button>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <h3>Clear Data</h3>
+                    <div class="value">
+                        <button class="btn btn-danger" onclick="clearAllData()">Clear All</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="subscriptions-table">
+                <div class="table-header">
+                    <h2 class="table-title">Current Subscriptions</h2>
+                </div>
+                <table class="table" id="testTable">
+                    <thead>
+                        <tr>
+                            <th>Service Name</th>
+                            <th>Amount</th>
+                            <th>Billing Date</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="testTableBody">
+                        <!-- Will be populated by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <script src="js/script.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/notifications.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script>
+        // Test functions
+        function testNotifications() {
+            if (typeof notificationManager !== 'undefined') {
+                notificationManager.showInAppNotification({
+                    id: 'test_' + Date.now(),
+                    type: 'test',
+                    title: 'Test Notification',
+                    message: 'This is a test notification to verify the system is working correctly.',
+                    priority: 'medium'
+                });
+                showNotification('Test notification sent!', 'success');
+            } else {
+                showNotification('Notification system not loaded', 'error');
+            }
+        }
+
+        function addSampleData() {
+            if (typeof addSampleData === 'function') {
+                addSampleData();
+                showNotification('Sample data added!', 'success');
+                updateTestTable();
+            } else {
+                showNotification('Dashboard functions not loaded', 'error');
+            }
+        }
+
+        function clearAllData() {
+            if (confirm('Clear all data?')) {
+                subscriptions = [];
+                saveSubscriptions();
+                showNotification('All data cleared!', 'success');
+                updateTestTable();
+            }
+        }
+
+        function updateTestTable() {
+            const tbody = document.getElementById('testTableBody');
+            if (!tbody) return;
+
+            tbody.innerHTML = '';
+
+            if (subscriptions.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="4" style="text-align: center; padding: 2rem;">No subscriptions found</td></tr>';
+                return;
+            }
+
+            subscriptions.forEach(subscription => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${subscription.serviceName}</td>
+                    <td>$${subscription.amount}</td>
+                    <td>${formatDate(subscription.billingDate)}</td>
+                    <td><span class="status-badge status-${subscription.status.toLowerCase()}">${subscription.status}</span></td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        // Initialize test page
+        document.addEventListener('DOMContentLoaded', function() {
+            updateTestTable();
+        });
+    </script>
+</body>
+</html>

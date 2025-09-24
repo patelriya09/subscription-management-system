@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notifications - Subscription Manager</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <header class="header">
+        <nav class="navbar">
+            <div class="nav-brand">
+                <i class="fas fa-credit-card"></i>
+                <span>Subscription Manager</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="dashboard.html" class="nav-link">Dashboard</a></li>
+                <li><a href="notifications.html" class="nav-link active">Notifications</a></li>
+                <li><a href="settings.html" class="nav-link">Settings</a></li>
+                <li><a href="#" class="nav-link" onclick="handleLogout()">Logout</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </nav>
+    </header>
+
+    <main class="main">
+        <div class="dashboard">
+            <div class="dashboard-header">
+                <h1 class="dashboard-title">
+                    <i class="fas fa-bell"></i> Notifications
+                </h1>
+                <div class="notification-actions">
+                    <button class="btn btn-secondary" onclick="markAllAsRead()">
+                        <i class="fas fa-check-double"></i> Mark All Read
+                    </button>
+                    <button class="btn btn-danger" onclick="clearAllNotifications()">
+                        <i class="fas fa-trash"></i> Clear All
+                    </button>
+                </div>
+            </div>
+
+            <!-- Notification Stats -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3>Total Notifications</h3>
+                    <div class="value" id="totalNotifications">0</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Unread</h3>
+                    <div class="value" id="unreadNotifications">0</div>
+                </div>
+                <div class="stat-card">
+                    <h3>High Priority</h3>
+                    <div class="value" id="highPriorityNotifications">0</div>
+                </div>
+            </div>
+
+            <!-- Notifications List -->
+            <div class="notifications-container">
+                <div class="notifications-header">
+                    <h2>Recent Notifications</h2>
+                    <div class="filter-options">
+                        <select id="notificationFilter" onchange="filterNotifications()">
+                            <option value="all">All Notifications</option>
+                            <option value="unread">Unread Only</option>
+                            <option value="payment_reminder">Payment Reminders</option>
+                            <option value="overdue_reminder">Overdue Reminders</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div id="notificationsList" class="notifications-list">
+                    <!-- Notifications will be populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 Subscription Manager. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="js/script.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/notifications.js"></script>
+    <script src="js/notifications-page.js"></script>
+</body>
+</html>
